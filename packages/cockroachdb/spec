@@ -1,0 +1,5 @@
+---
+name: cockroachdb
+
+files:
+- cockroach-latest.linux-amd64.tgz

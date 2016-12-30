@@ -1,0 +1,5 @@
+check process cockroachdb
+  with pidfile /var/vcap/sys/run/cockroachdb/pid
+  start program "/var/vcap/jobs/cockroachdb/bin/ctl start"
+  stop program "/var/vcap/jobs/cockroachdb/bin/ctl stop"
+  group vcap

@@ -1,0 +1,15 @@
+- type: replace
+  path: /releases/-
+  value:
+    name: ntp
+    version: latest
+
+- type: replace
+  path: /instance_groups/name=cockroachdb/jobs/-
+  value:
+    name: ntpd
+    release: ntp
+    consumes:
+      ntp:
+        from: ntp_local
+        deployment: ntp-server

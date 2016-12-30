@@ -1,0 +1,69 @@
+#!/bin/bash
+
+set -e
+
+export CONF_DIR=/var/vcap/jobs/cockroachdb/config
+export LOG_DIR=/var/vcap/sys/log/cockroachdb
+export RUN_DIR=/var/vcap/sys/run/cockroachdb
+export STORE_DIR=/var/vcap/store/cockroachdb
+export PIDFILE=/var/vcap/sys/run/cockroachdb/pid
+export TMPDIR=/var/vcap/data/cockroachdb/tmp
+
+case $1 in
+
+  start)
+    mkdir -p           $LOG_DIR $RUN_DIR $STORE_DIR
+    chown -R vcap:vcap $LOG_DIR $RUN_DIR $STORE_DIR
+
+    chmod 600       $CONF_DIR/cert_ca $CONF_DIR/cert $CONF_DIR/cert_private_key
+    chown vcap:vcap $CONF_DIR/cert_ca $CONF_DIR/cert $CONF_DIR/cert_private_key
+
+    # https://www.cockroachlabs.com/docs/recommended-production-settings.html
+    ulimit -n 20000
+
+    echo $$ > $PIDFILE
+
+    <%
+      peers = link("peers")
+      addrs = peers.instances.map { |inst| inst.address + ":" + peers.p("join_port").to_s }
+      join_opt = addrs.join(",")
+    %>
+
+    exec chpst -u vcap:vcap \
+      /var/vcap/packages/cockroachdb/cockroach start \
+      --store=$STORE_DIR \
+      --ca-cert=$CONF_DIR/cert_ca \
+      --cert=$CONF_DIR/cert \
+      --key=$CONF_DIR/cert_private_key \
+      --advertise-host=<%= spec.address %> \
+      --host=<%= spec.address %> \
+      --port=<%= p("port") %> \
+      --http-host=<%= p("http_host") %> \
+      --http-port=<%= p("http_port") %> \
+      <% if !spec.bootstrap %> \
+      --join=<%= join_opt %> \
+      <% end %> \
+      --raft-tick-interval=<%= p("raft_tick_interval") %> \
+      --log-dir=$LOG_DIR \
+      --alsologtostderr \
+      --no-color \
+      >>$LOG_DIR/stdout.log \
+      2>>$LOG_DIR/stderr.log
+    ;;
+
+  stop)
+    # Expecting bin/drain to gracefully quit cockroach before we get to this
+    if [ -f $PIDFILE ]; then
+      kill -9 `cat $PIDFILE` || true
+      rm -f $PIDFILE
+    fi
+    ;;
+
+  *)
+    echo "Usage: $0 {start|stop}"
+    exit 1
+    ;;
+
+esac
+
+exit 0

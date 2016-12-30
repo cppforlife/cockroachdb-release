@@ -1,0 +1,7 @@
+- type: replace
+  path: /releases/name=cockroachdb/version
+  value: create
+
+- type: replace
+  path: /releases/name=cockroachdb/url?
+  value: file:///Users/pivotal/workspace/cockroachdb-release

@@ -1,0 +1,9 @@
+#!/bin/bash
+
+set -x
+
+server=https://localhost:8080
+
+curl -k --max-time 5 $server/_admin/v1/health
+curl -k --max-time 5 $server/_status/vars
+curl -k --max-time 5 $server/_status/nodes/local

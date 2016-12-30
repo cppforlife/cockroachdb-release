@@ -1,0 +1,15 @@
+#!/bin/bash
+
+echo "`date`: Started health check"
+
+for (( i=1; i<=5; i++ )); do
+  curl https://localhost:<%= p("http_port") %>/_admin/v1/health -k -s -f -o /dev/null --max-time 5
+  if [ $? -eq 0 ]; then
+  	echo "`date`: Passed health check"
+    exit 0
+  fi
+  sleep 3
+done
+
+echo "`date`: Failed health check"
+exit 1

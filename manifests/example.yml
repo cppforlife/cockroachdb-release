@@ -1,0 +1,89 @@
+---
+name: cockroachdb
+
+releases:
+- name: cockroachdb
+  version: latest
+
+stemcells:
+- alias: default
+  os: ubuntu-trusty
+  version: latest
+
+update:
+  canaries: 1
+  max_in_flight: 1
+  canary_watch_time: 5000-120000
+  update_watch_time: 5000-120000
+
+instance_groups:
+- name: cockroachdb
+  azs: [z1, z2, z3]
+  instances: 3
+  jobs:
+  - name: cockroachdb
+    release: cockroachdb
+    properties:
+      cert: ((cockroachdb_server_ssl))
+  vm_type: default
+  stemcell: default
+  persistent_disk: 32_768
+  networks:
+  - name: default
+
+- name: cockroachdb_root
+  azs: [z1]
+  instances: 1
+  jobs:
+  - name: cockroachdb_user
+    release: cockroachdb
+    properties:
+      cert: ((cockroachdb_user_root)) # could also use ((cockroachdb_user_test))
+  vm_type: default
+  stemcell: default
+  networks:
+  - name: default
+
+- name: smoke-tests
+  azs: [z1]
+  lifecycle: errand
+  instances: 1
+  jobs:
+  - name: smoke-tests
+    release: cockroachdb
+    properties:
+      cert: ((cockroachdb_user_root))
+      test_to_run: bank2
+  vm_type: default
+  stemcell: default
+  networks:
+  - name: default
+
+variables:
+- name: cockroachdb_ca
+  type: certificate
+  options:
+    common_name: cockroachdb
+- name: cockroachdb_server_ssl
+  type: certificate
+  options:
+    ca: cockroachdb_ca
+    common_name: node
+    alternative_names: ["*.cockroachdb.default.cockroachdb.bosh"]
+    ext_key_usage:
+    - server_auth
+    - client_auth
+- name: cockroachdb_user_root
+  type: certificate
+  options:
+    ca: cockroachdb_ca
+    common_name: root
+    ext_key_usage:
+    - client_auth
+- name: cockroachdb_user_test
+  type: certificate
+  options:
+    ca: cockroachdb_ca
+    common_name: test
+    ext_key_usage:
+    - client_auth

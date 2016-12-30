@@ -1,0 +1,5 @@
+name: cockroachdb
+blobstore:
+  provider: s3
+  options:
+    bucket_name: cockroachdb-blobs

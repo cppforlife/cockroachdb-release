@@ -1,0 +1,56 @@
+---
+name: cockroachdb
+
+templates:
+  ctl: bin/ctl
+  drain: bin/drain
+  post-start: bin/post-start
+  debug: bin/debug
+  env: bin/env
+  cli: bin/cli
+  cert: config/cert
+  cert_ca: config/cert_ca
+  cert_private_key: config/cert_private_key
+
+consumes:
+- name: peers
+  type: cockroachdb_peers
+
+provides:
+- name: peers
+  type: cockroachdb_peers
+  properties:
+  - join_port
+- name: conn
+  type: cockroachdb_conn
+  properties:
+  - port
+  # include ca part of the cert
+
+packages:
+- cockroachdb
+
+properties:
+  port:
+    description: "Client connect over this port"
+    default: 26257
+  join_port:
+    description: "Peers join over this port"
+    default: 26257
+
+  http_host:
+    description: |
+      Admin UI listen address. Instead of setting this to 0.0.0.0 you can use port forwarding:
+      Use `bosh -d cockroachdb ssh cockroachdb/0 --opts=" -L 8080:127.0.0.1:8080"` to expose service locally.
+    default: 127.0.0.1
+  http_port:
+    description: "Admin UI port"
+    default: 8080
+
+  cert:
+    type: certificate
+    description: Cluster certificate
+
+  raft_tick_interval:
+    description: The resolution of the Raft timer; other raft timeouts are defined in terms of multiples of this value.
+    default: 200ms

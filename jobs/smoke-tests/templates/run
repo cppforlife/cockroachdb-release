@@ -1,0 +1,31 @@
+#!/bin/bash
+
+set -e
+
+export LOG_DIR=/var/vcap/sys/log/smoke-tests
+export CONF_DIR=/var/vcap/jobs/smoke-tests/config
+
+mkdir -p $LOG_DIR
+chmod 600 $CONF_DIR/cert_ca $CONF_DIR/cert $CONF_DIR/cert_private_key
+
+export COCKROACH_CA_CERT=$CONF_DIR/cert_ca
+export COCKROACH_CERT=$CONF_DIR/cert
+export COCKROACH_KEY=$CONF_DIR/cert_private_key
+
+# todo what if first instance is not available?
+export COCKROACH_HOST=<%= link("conn").instances.first.address %>
+export COCKROACH_PORT=<%= link("conn").p("port") %>
+export COCKROACH_CONN="postgresql://${COCKROACH_HOST}:${COCKROACH_PORT}/<%= p("database") %>?sslmode=verify-ca&sslkey=${COCKROACH_KEY}&sslcert=${COCKROACH_CERT}&sslrootcert=${COCKROACH_CA_CERT}"
+
+/var/vcap/packages/cockroachdb/cockroach sql -e "DROP DATABASE IF EXISTS <%= p("database") %>;"
+/var/vcap/packages/cockroachdb/cockroach sql -e "CREATE DATABASE <%= p("database") %>;"
+
+<%
+  cmd = p("tests.#{p("test_to_run")}.cmd")
+  opts = p("tests.#{p("test_to_run")}.opts")
+%>
+
+/var/vcap/packages/smoke-tests/bin/<%= cmd %> \
+  <%= opts.join(" ") %> $COCKROACH_CONN >$LOG_DIR/stdout.log 2>$LOG_DIR/stderr.log
+
+echo "done."

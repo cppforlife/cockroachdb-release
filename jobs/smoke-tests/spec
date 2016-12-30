@@ -1,0 +1,72 @@
+---
+name: smoke-tests
+
+templates:
+  run: bin/run
+  cert: config/cert
+  cert_ca: config/cert_ca
+  cert_private_key: config/cert_private_key
+
+consumes:
+- name: conn
+  type: cockroachdb_conn
+
+packages:
+- cockroachdb
+- smoke-tests
+
+properties:
+  cert:
+    type: certificate
+    description: User certificate
+
+  database:
+    description: Database name. It will be dropped and recreated.
+    default: smoke_tests
+
+  test_to_run:
+    description: Determines which test to run.
+    default: simple
+
+  tests.simple:
+    description: |
+      Simple app as described in https://www.cockroachlabs.com/docs/build-a-test-app.html.
+    default:
+      cmd: simple
+      opts: []
+
+  tests.bank2:
+    description: |
+      This bank example program transfers money between accounts, 
+      creating new ledger transactions in the form of a transaction 
+      record and two transaction "legs" per database transaction. 
+      Each transfer additionally queries and updates account balances.
+      Taken from https://github.com/cockroachdb/examples-go/tree/master/bank2.
+        var maxTransfer = flag.Int("max-transfer", 100, "Maximum amount to transfer in one transaction.")
+        var numTransfers = flag.Int("num-transfers", 0, "Number of transfers (0 to continue indefinitely).")
+        var numAccounts = flag.Int("num-accounts", 100, "Number of accounts.")
+        var concurrency = flag.Int("concurrency", 16, "Number of concurrent actors moving money.")
+        var contention = flag.String("contention", "low", "Contention model {low | high}.")
+        var balanceCheckInterval = flag.Duration("balance-check-interval", time.Second, "Interval of balance check.")
+    default:
+      cmd: bank2
+      opts:
+      - -num-transfers=10000
+
+  tests.bank2_high_contention:
+    description: bank2 test with high contention.
+    default:
+      cmd: bank2
+      opts:
+      - -num-transfers=10000
+      - -contention=high
+
+  tests.bank2_non_stop:
+    description: bank2 test with indefinite number of transfers.
+    default:
+      cmd: bank2
+      opts:
+      - -num-transfers=0
+
+  tests.custom:
+    description: Custom test. Specify cmd and opts.

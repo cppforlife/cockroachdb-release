@@ -1,0 +1,21 @@
+---
+name: cockroachdb_user
+
+templates:
+  env: bin/env
+  cli: bin/cli
+  cert: config/cert
+  cert_ca: config/cert_ca
+  cert_private_key: config/cert_private_key
+
+consumes:
+- name: conn
+  type: cockroachdb_conn
+
+packages:
+- cockroachdb
+
+properties:
+  cert:
+    type: certificate
+    description: User certificate

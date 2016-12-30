@@ -1,0 +1,2 @@
+ba57380 github.com/cockroachdb/cockroach-go/.git
+5bf1611 github.com/lib/pq/.git

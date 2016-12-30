@@ -1,0 +1,13 @@
+#!/bin/bash
+
+export CONF_DIR=/var/vcap/jobs/cockroachdb/config
+
+# Use env vars since some command dont allow these flags
+export COCKROACH_CA_CERT=$CONF_DIR/cert_ca
+export COCKROACH_CERT=$CONF_DIR/cert
+export COCKROACH_KEY=$CONF_DIR/cert_private_key
+
+export COCKROACH_HOST=<%= spec.address %>
+export COCKROACH_PORT=<%= p("port") %>
+
+alias cockroach=/var/vcap/packages/cockroachdb/cockroach

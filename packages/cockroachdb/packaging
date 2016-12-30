@@ -1,0 +1,7 @@
+#!/bin/bash
+
+set -e
+
+tar xzf cockroach-latest.linux-amd64.tgz
+
+cp cockroach-latest.linux-amd64/cockroach ${BOSH_INSTALL_TARGET}
