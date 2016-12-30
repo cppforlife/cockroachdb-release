@@ -1,0 +1,38 @@
+name: cockroachdb
+version: "1"
+commit_hash: a4cd688
+uncommitted_changes: false
+jobs:
+- name: cockroachdb
+  version: 50e4fd65fc95a17a3de53c158dfb3209d79f8a91
+  fingerprint: 50e4fd65fc95a17a3de53c158dfb3209d79f8a91
+  sha1: 521c092ae43f382208c79a3ca8fbde5c3a465e75
+- name: cockroachdb_user
+  version: 73b71afae148e6e9b51534e743f6c9c91d10222b
+  fingerprint: 73b71afae148e6e9b51534e743f6c9c91d10222b
+  sha1: e6e28f005fe89ee2040497dca1e70f347ac20d8d
+- name: smoke-tests
+  version: 470e1ec4c15cf54bb4ad16662fa3709e1405213a
+  fingerprint: 470e1ec4c15cf54bb4ad16662fa3709e1405213a
+  sha1: 0648dd24aa4c635ff90c9f2356df8509543564d2
+packages:
+- name: cockroachdb
+  version: b8f48d27defd2845381ac6c743f903f7204d7141
+  fingerprint: b8f48d27defd2845381ac6c743f903f7204d7141
+  sha1: 9b4ada5ef27b31c431cb56ef5892083ca0f7a300
+  dependencies: []
+- name: golang_1.7
+  version: 482e72c8435a11e1d1c3c25e4ee86ced53cc8739
+  fingerprint: 482e72c8435a11e1d1c3c25e4ee86ced53cc8739
+  sha1: 2f523491d0e79c745a9cd616a3ebf0e871586a23
+  dependencies: []
+- name: smoke-tests
+  version: e71f47401723820faeaf6001bef67b48487b3ca8
+  fingerprint: e71f47401723820faeaf6001bef67b48487b3ca8
+  sha1: cad387fdd0091eb015e62e2bb5bdf9ff62939ec9
+  dependencies:
+  - golang_1.7
+license:
+  version: d2739dea2ccad0f4460c0485afd09a163929fa93
+  fingerprint: d2739dea2ccad0f4460c0485afd09a163929fa93
+  sha1: 20ec5d0b368e5ef1c1ca587e7d8a68efb662bf81
