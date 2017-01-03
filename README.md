@@ -1,5 +1,7 @@
 # cockroachdb-release
 
+![cockroach](http://i.imgur.com/4qKtitB.gif)
+
 Release for [CockroachDB](https://github.com/cockroachdb/cockroach).
 
 - Requires DNS
