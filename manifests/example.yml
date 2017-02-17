@@ -63,6 +63,7 @@ variables:
 - name: cockroachdb_ca
   type: certificate
   options:
+    is_ca: true
     common_name: cockroachdb
 - name: cockroachdb_server_ssl
   type: certificate
@@ -70,7 +71,7 @@ variables:
     ca: cockroachdb_ca
     common_name: node
     alternative_names: ["*.cockroachdb.default.cockroachdb.bosh"]
-    ext_key_usage:
+    extended_key_usage:
     - server_auth
     - client_auth
 - name: cockroachdb_user_root
@@ -78,12 +79,12 @@ variables:
   options:
     ca: cockroachdb_ca
     common_name: root
-    ext_key_usage:
+    extended_key_usage:
     - client_auth
 - name: cockroachdb_user_test
   type: certificate
   options:
     ca: cockroachdb_ca
     common_name: test
-    ext_key_usage:
+    extended_key_usage:
     - client_auth
