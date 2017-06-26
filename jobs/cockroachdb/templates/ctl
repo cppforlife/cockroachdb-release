@@ -15,8 +15,8 @@ case $1 in
     mkdir -p           $LOG_DIR $RUN_DIR $STORE_DIR
     chown -R vcap:vcap $LOG_DIR $RUN_DIR $STORE_DIR
 
-    chmod 600       $CONF_DIR/cert_ca $CONF_DIR/cert $CONF_DIR/cert_private_key
-    chown vcap:vcap $CONF_DIR/cert_ca $CONF_DIR/cert $CONF_DIR/cert_private_key
+    chmod 600       $CONF_DIR/certs/*
+    chown vcap:vcap $CONF_DIR/certs/*
 
     # https://www.cockroachlabs.com/docs/recommended-production-settings.html
     ulimit -n 20000
@@ -32,9 +32,7 @@ case $1 in
     exec chpst -u vcap:vcap \
       /var/vcap/packages/cockroachdb/cockroach start \
       --store=$STORE_DIR \
-      --ca-cert=$CONF_DIR/cert_ca \
-      --cert=$CONF_DIR/cert \
-      --key=$CONF_DIR/cert_private_key \
+      --certs-dir=$CONF_DIR/certs \
       --advertise-host=<%= spec.address %> \
       --host=<%= spec.address %> \
       --port=<%= p("port") %> \
@@ -43,9 +41,8 @@ case $1 in
       <% if !spec.bootstrap %> \
       --join=<%= join_opt %> \
       <% end %> \
-      --raft-tick-interval=<%= p("raft_tick_interval") %> \
       --log-dir=$LOG_DIR \
-      --alsologtostderr \
+      --logtostderr=INFO \
       --no-color \
       >>$LOG_DIR/stdout.log \
       2>>$LOG_DIR/stderr.log

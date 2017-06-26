@@ -7,13 +7,11 @@ mkdir -p           $LOG_DIR
 chown -R vcap:vcap $LOG_DIR
 
 /var/vcap/packages/cockroachdb/cockroach quit \
-  --ca-cert=$CONF_DIR/cert_ca \
-  --cert=$CONF_DIR/cert \
-  --key=$CONF_DIR/cert_private_key \
+  --certs-dir=$CONF_DIR/certs \
   --host=0.0.0.0 \
   --port=<%= p("port") %> \
   --log-dir=$LOG_DIR \
-  --alsologtostderr \
+  --logtostderr=INFO \
   --no-color \
   >>$LOG_DIR/stdout.log \
   2>>$LOG_DIR/stderr.log

@@ -2,11 +2,10 @@
 name: cockroachdb_user
 
 templates:
-  env: bin/env
   cli: bin/cli
-  cert: config/cert
-  cert_ca: config/cert_ca
-  cert_private_key: config/cert_private_key
+  cert: config/certs/client.crt
+  cert_ca: config/certs/ca.crt
+  cert_private_key: config/certs/client.key
 
 consumes:
 - name: conn
@@ -19,3 +18,6 @@ properties:
   cert:
     type: certificate
     description: User certificate
+  user:
+    descripton: "Name of the user in the common name of the certificate"
+    default: root

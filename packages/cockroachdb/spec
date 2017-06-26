@@ -2,4 +2,4 @@
 name: cockroachdb
 
 files:
-- cockroach-latest.linux-amd64.tgz
+- cockroach-v1.0.2.linux-amd64.tgz

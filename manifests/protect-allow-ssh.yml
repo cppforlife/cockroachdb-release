@@ -1,0 +1,11 @@
+- type: replace
+  path: /instance_groups/name=cockroachdb/jobs/name=sec-groups/properties/ingress/-
+  value:
+    cidrs: [0.0.0.0/0]
+    ports: [22]
+
+- type: replace
+  path: /instance_groups/name=cockroachdb_root/jobs/name=sec-groups/properties/ingress?/-
+  value:
+    cidrs: [0.0.0.0/0]
+    ports: [22]

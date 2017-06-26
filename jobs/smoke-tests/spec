@@ -3,9 +3,11 @@ name: smoke-tests
 
 templates:
   run: bin/run
-  cert: config/cert
-  cert_ca: config/cert_ca
-  cert_private_key: config/cert_private_key
+  cert: config/certs/client.crt
+  root_cert: config/certs/client.root.crt
+  root_cert_private_key: config/certs/client.root.key
+  cert_ca: config/certs/ca.crt
+  cert_private_key: config/certs/client.key
 
 consumes:
 - name: conn
@@ -19,6 +21,13 @@ properties:
   cert:
     type: certificate
     description: User certificate
+  user:
+    descripton: "Name of the user in the common name of the certificate"
+    default: test
+
+  root_cert:
+    type: certificate
+    description: Root user certificate; used for database creation
 
   database:
     description: Database name. It will be dropped and recreated.

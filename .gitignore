@@ -14,3 +14,4 @@ releases/**/*.tgz
 #*
 
 creds.yml
+tests/creds.yml

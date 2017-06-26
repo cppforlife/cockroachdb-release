@@ -2,30 +2,61 @@
 
 set -e
 
-export LOG_DIR=/var/vcap/sys/log/smoke-tests
-export CONF_DIR=/var/vcap/jobs/smoke-tests/config
+echo "`date`: Configure certs directory"
 
-mkdir -p $LOG_DIR
-chmod 600 $CONF_DIR/cert_ca $CONF_DIR/cert $CONF_DIR/cert_private_key
+certs_path=/var/vcap/data/smoke-tests/certs
+rm -rf $certs_path
+mkdir -p $certs_path
+cp /var/vcap/jobs/smoke-tests/config/certs/* $certs_path/
+mv $certs_path/client.crt $certs_path/client.<%= p("user") %>.crt
+mv $certs_path/client.key $certs_path/client.<%= p("user") %>.key
+chmod 600 $certs_path/*
+chown vcap:vcap $certs_path/*
 
-export COCKROACH_CA_CERT=$CONF_DIR/cert_ca
-export COCKROACH_CERT=$CONF_DIR/cert
-export COCKROACH_KEY=$CONF_DIR/cert_private_key
+echo "`date`: Drop and create database"
 
 # todo what if first instance is not available?
 export COCKROACH_HOST=<%= link("conn").instances.first.address %>
 export COCKROACH_PORT=<%= link("conn").p("port") %>
-export COCKROACH_CONN="postgresql://${COCKROACH_HOST}:${COCKROACH_PORT}/<%= p("database") %>?sslmode=verify-ca&sslkey=${COCKROACH_KEY}&sslcert=${COCKROACH_CERT}&sslrootcert=${COCKROACH_CA_CERT}"
 
-/var/vcap/packages/cockroachdb/cockroach sql -e "DROP DATABASE IF EXISTS <%= p("database") %>;"
-/var/vcap/packages/cockroachdb/cockroach sql -e "CREATE DATABASE <%= p("database") %>;"
+/var/vcap/packages/cockroachdb/cockroach \
+  sql --user root --certs-dir $certs_path -e "DROP DATABASE IF EXISTS <%= p("database") %>;"
+/var/vcap/packages/cockroachdb/cockroach \
+  sql --user root --certs-dir $certs_path -e "CREATE DATABASE <%= p("database") %>;"
+/var/vcap/packages/cockroachdb/cockroach \
+  user set --user root --certs-dir $certs_path <%= p("user") %>
+
+function clean_up {
+  echo "`date`: Clean up"
+
+  /var/vcap/packages/cockroachdb/cockroach \
+    sql --user root --certs-dir $certs_path -e "DROP DATABASE IF EXISTS <%= p("database") %>;"
+  /var/vcap/packages/cockroachdb/cockroach \
+    user rm --user root --certs-dir $certs_path <%= p("user") %>
+}
+
+trap clean_up EXIT
+
+/var/vcap/packages/cockroachdb/cockroach \
+  sql --user root --certs-dir $certs_path \
+  -e "GRANT CREATE,DROP,SELECT,INSERT,DELETE,UPDATE ON DATABASE <%= p("database") %> TO <%= p("user") %>;"
 
 <%
   cmd = p("tests.#{p("test_to_run")}.cmd")
   opts = p("tests.#{p("test_to_run")}.opts")
 %>
 
-/var/vcap/packages/smoke-tests/bin/<%= cmd %> \
-  <%= opts.join(" ") %> $COCKROACH_CONN >$LOG_DIR/stdout.log 2>$LOG_DIR/stderr.log
+echo "`date`: Run smoke tests"
 
-echo "done."
+export SMOKE_TESTS_CA_CERT=$certs_path/ca.crt
+export SMOKE_TESTS_CERT=$certs_path/client.<%= p("user") %>.crt
+export SMOKE_TESTS_KEY=$certs_path/client.<%= p("user") %>.key
+export SMOKE_TESTS_CONN="postgresql://<%= p("user") %>@${COCKROACH_HOST}:${COCKROACH_PORT}/<%= p("database") %>?sslmode=verify-ca&sslkey=${SMOKE_TESTS_KEY}&sslcert=${SMOKE_TESTS_CERT}&sslrootcert=${SMOKE_TESTS_CA_CERT}"
+
+export LOG_DIR=/var/vcap/sys/log/smoke-tests
+mkdir -p $LOG_DIR
+
+/var/vcap/packages/smoke-tests/bin/<%= cmd %> \
+  <%= opts.join(" ") %> $SMOKE_TESTS_CONN # >$LOG_DIR/stdout.log 2>$LOG_DIR/stderr.log
+
+echo "`date`: Done"

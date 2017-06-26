@@ -1,0 +1,38 @@
+- type: replace
+  path: /releases/-
+  value:
+    name: sec-groups
+    version: latest
+
+- type: replace
+  path: /instance_groups/name=cockroachdb/jobs/-
+  value:
+    name: sec-groups
+    release: sec-groups
+    properties:
+      ingress:
+      - ports: [&port 26257]
+      - instance_groups: [smoke-tests, cockroachdb-root]
+        ports: [*port]
+      egress:
+      - ports: [*port]
+
+- type: replace
+  path: /instance_groups/name=cockroachdb_root/jobs/-
+  value:
+    name: sec-groups
+    release: sec-groups
+    properties:
+      egress:
+      - instance_groups: [cockroachdb]
+        ports: [*port]
+
+- type: replace
+  path: /instance_groups/name=smoke-tests/jobs/-
+  value:
+    name: sec-groups
+    release: sec-groups
+    properties:
+      egress:
+      - instance_groups: [cockroachdb]
+        ports: [*port]

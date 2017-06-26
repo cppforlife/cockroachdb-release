@@ -6,11 +6,9 @@ templates:
   drain: bin/drain
   post-start: bin/post-start
   debug: bin/debug
-  env: bin/env
-  cli: bin/cli
-  cert: config/cert
-  cert_ca: config/cert_ca
-  cert_private_key: config/cert_private_key
+  cert: config/certs/node.crt
+  cert_ca: config/certs/ca.crt
+  cert_private_key: config/certs/node.key
 
 consumes:
 - name: peers
@@ -50,7 +48,3 @@ properties:
   cert:
     type: certificate
     description: Cluster certificate
-
-  raft_tick_interval:
-    description: The resolution of the Raft timer; other raft timeouts are defined in terms of multiples of this value.
-    default: 200ms

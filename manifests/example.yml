@@ -38,7 +38,7 @@ instance_groups:
   - name: cockroachdb_user
     release: cockroachdb
     properties:
-      cert: ((cockroachdb_user_root)) # could also use ((cockroachdb_user_test))
+      cert: ((cockroachdb_user_root))
   vm_type: default
   stemcell: default
   networks:
@@ -52,8 +52,9 @@ instance_groups:
   - name: smoke-tests
     release: cockroachdb
     properties:
-      cert: ((cockroachdb_user_root))
-      test_to_run: bank2
+      cert: ((cockroachdb_user_test))
+      root_cert: ((cockroachdb_user_root))
+      # test_to_run: bank2
   vm_type: default
   stemcell: default
   networks:
