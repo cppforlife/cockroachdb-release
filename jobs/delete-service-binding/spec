@@ -1,0 +1,21 @@
+---
+name: delete-service-binding
+
+templates:
+  run: bin/run
+  root_cert_ca: config/certs/ca.crt
+  root_cert: config/certs/client.root.crt
+  root_cert_private_key: config/certs/client.root.key
+
+consumes:
+- name: conn
+  type: cockroachdb_conn
+- name: root_user
+  type: cockroachdb_root_user
+
+packages:
+- cockroachdb
+
+properties:
+  user:
+    descripton: "Name of the user to delete"

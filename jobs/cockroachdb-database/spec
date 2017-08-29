@@ -1,0 +1,28 @@
+---
+name: cockroachdb-database
+
+templates:
+  root_cert_ca: config/certs/ca.crt
+  root_cert: config/certs/client.root.crt
+  root_cert_private_key: config/certs/client.root.key
+  # todo bin/run ideally
+  post-start: bin/post-start
+
+consumes:
+- name: conn
+  type: cockroachdb_conn
+- name: root_user
+  type: cockroachdb_root_user
+
+provides:
+- name: database
+  type: cockroachdb_database
+  properties:
+  - name
+
+packages:
+- cockroachdb
+
+properties:
+  name:
+    descripton: "Name of the database to create"

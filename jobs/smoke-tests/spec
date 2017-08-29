@@ -3,10 +3,10 @@ name: smoke-tests
 
 templates:
   run: bin/run
-  cert: config/certs/client.crt
   root_cert: config/certs/client.root.crt
   root_cert_private_key: config/certs/client.root.key
   cert_ca: config/certs/ca.crt
+  cert: config/certs/client.crt
   cert_private_key: config/certs/client.key
 
 consumes:
@@ -46,9 +46,9 @@ properties:
 
   tests.bank2:
     description: |
-      This bank example program transfers money between accounts, 
-      creating new ledger transactions in the form of a transaction 
-      record and two transaction "legs" per database transaction. 
+      This bank example program transfers money between accounts,
+      creating new ledger transactions in the form of a transaction
+      record and two transaction "legs" per database transaction.
       Each transfer additionally queries and updates account balances.
       Taken from https://github.com/cockroachdb/examples-go/tree/master/bank2.
         var maxTransfer = flag.Int("max-transfer", 100, "Maximum amount to transfer in one transaction.")

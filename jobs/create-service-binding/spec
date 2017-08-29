@@ -1,0 +1,28 @@
+---
+name: create-service-binding
+
+templates:
+  run: bin/run
+  root_cert: config/certs/client.root.crt
+  root_cert_private_key: config/certs/client.root.key
+  cert_ca: config/certs/ca.crt
+  cert: config/certs/client.crt
+  cert_private_key: config/certs/client.key
+
+consumes:
+- name: conn
+  type: cockroachdb_conn
+- name: root_user
+  type: cockroachdb_root_user
+- name: database
+  type: cockroachdb_database
+
+packages:
+- cockroachdb
+
+properties:
+  user:
+    descripton: "Name of the user to create. Must match common name of the certificate."
+  cert:
+    type: certificate
+    description: User certificate

@@ -1,0 +1,17 @@
+#!/bin/bash
+
+certs_path=/var/vcap/data/cockroachdb-database/certs
+rm -rf $certs_path
+mkdir -p $certs_path
+
+cp /var/vcap/jobs/cockroachdb-database/config/certs/* $certs_path/
+
+chmod 600 $certs_path/*
+chown vcap:vcap $certs_path/*
+
+# todo what if first instance is not available?
+export COCKROACH_HOST=<%= link("conn").instances.first.address %>
+export COCKROACH_PORT=<%= link("conn").p("port") %>
+
+/var/vcap/packages/cockroachdb/cockroach \
+  sql --user root --certs-dir $certs_path -e "CREATE DATABASE IF NOT EXISTS <%= p("name") %>;"

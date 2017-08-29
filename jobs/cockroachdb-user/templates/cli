@@ -4,9 +4,11 @@
 certs_path=/var/vcap/data/cockroachdb_user/certs
 rm -rf $certs_path
 mkdir -p $certs_path
+
 cp /var/vcap/jobs/cockroachdb_user/config/certs/* $certs_path/
 mv $certs_path/client.crt $certs_path/client.<%= p("user") %>.crt
 mv $certs_path/client.key $certs_path/client.<%= p("user") %>.key
+
 chmod 600 $certs_path/*
 chown vcap:vcap $certs_path/*
 

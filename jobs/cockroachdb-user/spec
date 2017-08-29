@@ -1,23 +1,31 @@
 ---
-name: cockroachdb_user
+name: cockroachdb-user
 
 templates:
   cli: bin/cli
-  cert: config/certs/client.crt
   cert_ca: config/certs/ca.crt
+  cert: config/certs/client.crt
   cert_private_key: config/certs/client.key
 
 consumes:
 - name: conn
   type: cockroachdb_conn
 
+# todo separate job for this link?
+provides:
+- name: root_user
+  type: cockroachdb_root_user
+  properties:
+  - user
+  - cert
+
 packages:
 - cockroachdb
 
 properties:
-  cert:
-    type: certificate
-    description: User certificate
   user:
     descripton: "Name of the user in the common name of the certificate"
     default: root
+  cert:
+    type: certificate
+    description: User certificate
