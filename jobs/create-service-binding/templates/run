@@ -22,7 +22,7 @@ export COCKROACH_PORT=<%= link("conn").p("port") %>
 
 /var/vcap/packages/cockroachdb/cockroach \
   sql --user root --certs-dir $certs_path \
-  -e "GRANT CREATE,DROP,SELECT,INSERT,DELETE,UPDATE ON DATABASE <%= link("database").p("name") %> TO <%= p("user") %>;"  >/dev/null
+  -e "GRANT <%= p("privileges").join(",") %> ON DATABASE <%= link("database").p("name") %> TO <%= p("user") %>;"  >/dev/null
 
 echo "{
   \"credentials\":{

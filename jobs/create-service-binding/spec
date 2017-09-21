@@ -26,3 +26,6 @@ properties:
   cert:
     type: certificate
     description: User certificate
+  privileges:
+    description: Privileges given to the user.
+    default: [CREATE,DROP,SELECT,INSERT,DELETE,UPDATE]
