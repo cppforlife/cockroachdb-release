@@ -1,0 +1,66 @@
+name: cockroachdb
+version: "4"
+commit_hash: 29b182d
+uncommitted_changes: false
+jobs:
+- name: cockroachdb
+  version: 1c8140afb44a7db61cb221c7f9d92f1cf19f02ed
+  fingerprint: 1c8140afb44a7db61cb221c7f9d92f1cf19f02ed
+  sha1: 0aed6fc43c5c4ec1dfe030c5fa79d94d0f71c1fd
+- name: cockroachdb-user
+  version: d9a27e19dbc9cdf65a75ee7aca7b52f7a12a954a
+  fingerprint: d9a27e19dbc9cdf65a75ee7aca7b52f7a12a954a
+  sha1: eda6849cf3dc97da333f9dec0d65caeaf1a61c0e
+- name: create-database
+  version: a67c80ad2c10d3c6874c34a5053c65a466ffb1ac
+  fingerprint: a67c80ad2c10d3c6874c34a5053c65a466ffb1ac
+  sha1: 4589aa8367cbe01c993f310d225c7573c16bf621
+- name: create-user
+  version: 9d63571bed56a475536e8f6a4eaa7d538b3cd4ec
+  fingerprint: 9d63571bed56a475536e8f6a4eaa7d538b3cd4ec
+  sha1: 530477622839c42d43de61ecf816730d619d9fe8
+- name: delete-database
+  version: 4324f670462c97a079ef8624b04335799a864d6b
+  fingerprint: 4324f670462c97a079ef8624b04335799a864d6b
+  sha1: 34f9c90b82a2aaa7ff0329b78c82832dd0d448d2
+- name: delete-user
+  version: 3e2d2f24f7d13a30b710c5877a7c3b7182806357
+  fingerprint: 3e2d2f24f7d13a30b710c5877a7c3b7182806357
+  sha1: 6afb8f982260280f5f78da6e96aa6d7b98bbe785
+- name: report-health
+  version: b99f015c65ee9b7d176f5dc58adfd314aa09cac7
+  fingerprint: b99f015c65ee9b7d176f5dc58adfd314aa09cac7
+  sha1: ed7ca365f6e4722850a92cef01f4190b5f37e119
+- name: report-nodes-local
+  version: bc8932337242f82fb0aa465751a2ec13c0337f34
+  fingerprint: bc8932337242f82fb0aa465751a2ec13c0337f34
+  sha1: 68ebab9929e1d7ab50639b09cd2c9a954e04f927
+- name: report-vars
+  version: 68cecbc76601b07b6ebb256d510577a407f50f97
+  fingerprint: 68cecbc76601b07b6ebb256d510577a407f50f97
+  sha1: 4559f0b45a157c0a3e0a971aa307d3fbfa03ba61
+- name: smoke-tests
+  version: e9e5ea634b852a35139bd632717be85f388d0e9c
+  fingerprint: e9e5ea634b852a35139bd632717be85f388d0e9c
+  sha1: 19a4f263df6d851ea047fc82e42a4fa65c8bd58b
+packages:
+- name: cockroachdb
+  version: 780ef5dd7e4629327fb0154e386fb098009fa30c
+  fingerprint: 780ef5dd7e4629327fb0154e386fb098009fa30c
+  sha1: 6b8cada1791c6a5afdb6b612339fb16db46e8d73
+  dependencies: []
+- name: golang-1-linux
+  version: 4f3c42aabef059e5de7860640cf39ff2b151ba32
+  fingerprint: 4f3c42aabef059e5de7860640cf39ff2b151ba32
+  sha1: 547a22fa7d4c934397194c4657ed31586c4a1c60
+  dependencies: []
+- name: smoke-tests
+  version: 48d3e2b6249e6f8a8a8fe208dff59cab5721ec92
+  fingerprint: 48d3e2b6249e6f8a8a8fe208dff59cab5721ec92
+  sha1: eedc77b17459b80b93e1ee8b49d6aa590e3ed0e7
+  dependencies:
+  - golang-1-linux
+license:
+  version: d2739dea2ccad0f4460c0485afd09a163929fa93
+  fingerprint: d2739dea2ccad0f4460c0485afd09a163929fa93
+  sha1: 20ec5d0b368e5ef1c1ca587e7d8a68efb662bf81
