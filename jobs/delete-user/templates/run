@@ -16,4 +16,8 @@ export COCKROACH_HOST=<%= link("conn").instances.first.address %>
 export COCKROACH_PORT=<%= link("conn").p("port") %>
 
 /var/vcap/packages/cockroachdb/cockroach \
+  sql --user root --certs-dir $certs_path \
+  -e "REVOKE ALL ON DATABASE <%= link("database").p("name") %> FROM <%= p("user") %>;"
+
+/var/vcap/packages/cockroachdb/cockroach \
   user rm --user root --certs-dir $certs_path <%= p("user") %>

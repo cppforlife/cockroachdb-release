@@ -12,6 +12,8 @@ consumes:
   type: cockroachdb_conn
 - name: root_user
   type: cockroachdb_root_user
+- name: database
+  type: cockroachdb_database
 
 packages:
 - cockroachdb

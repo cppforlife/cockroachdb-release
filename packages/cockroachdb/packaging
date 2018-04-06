@@ -2,6 +2,6 @@
 
 set -e
 
-tar xzf cockroach-v1.0.2.linux-amd64.tgz
+tar xzf cockroach-v*.linux-amd64.tgz
 
-cp cockroach-v1.0.2.linux-amd64/cockroach ${BOSH_INSTALL_TARGET}
+cp cockroach-v*.linux-amd64/cockroach ${BOSH_INSTALL_TARGET}
