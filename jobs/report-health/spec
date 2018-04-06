@@ -1,0 +1,7 @@
+---
+name: report-health
+
+templates:
+  run: bin/run
+
+properties: {}

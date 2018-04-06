@@ -1,0 +1,3 @@
+#!/bin/bash
+
+curl -k --max-time 5 https://localhost:8080/_status/nodes/local

@@ -1,0 +1,7 @@
+---
+name: report-nodes-local
+
+templates:
+  run: bin/run
+
+properties: {}

@@ -1,0 +1,7 @@
+---
+name: report-vars
+
+templates:
+  run: bin/run
+
+properties: {}

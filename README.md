@@ -21,9 +21,14 @@ Port forward admin UI locally:
 $ bosh -d cockroachdb ssh cockroachdb/0 --opts=" -L 8080:127.0.0.1:8080"
 ```
 
-Get debug info from all nodes:
+Get debug info:
 
 ```
+$ bosh -d cockroachdb run-errand report-health
+$ bosh -d cockroachdb run-errand report-vars
+$ bosh -d cockroachdb run-errand report-nodes-local
+
+# or alternatively
 $ bosh -d cockroachdb ssh cockroachdb -c '/var/vcap/jobs/cockroachdb/bin/debug' -r
 ```
 
