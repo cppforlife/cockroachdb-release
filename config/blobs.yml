@@ -2,7 +2,3 @@ cockroach-v1.0.2.linux-amd64.tgz:
   size: 14979014
   object_id: d00ea2b0-9c7c-4cbe-4682-0862437d68c9
   sha: 98334dba02c140e75ea0122b06ba9224816ff043
-go1.7.4.linux-amd64.tar.gz:
-  size: 84021919
-  object_id: 7e6431ba-f2c6-4e80-6a16-cd5cd8722b57
-  sha: 2e5baf03d1590e048c84d1d5b4b6f2540efaaea1
