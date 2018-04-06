@@ -1,5 +1,5 @@
 ---
-name: create-service-binding
+name: create-user
 
 templates:
   run: bin/run

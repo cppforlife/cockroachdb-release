@@ -1,5 +1,5 @@
 ---
-name: delete-service-binding
+name: delete-user
 
 templates:
   run: bin/run

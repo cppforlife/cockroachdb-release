@@ -1,12 +1,10 @@
 #!/bin/bash
 
-set -e
-
-certs_path=/var/vcap/data/delete-service-binding/certs
+certs_path=/var/vcap/data/delete-database/certs
 rm -rf $certs_path
 mkdir -p $certs_path
 
-cp /var/vcap/jobs/delete-service-binding/config/certs/* $certs_path/
+cp /var/vcap/jobs/delete-database/config/certs/* $certs_path/
 
 chmod 600 $certs_path/*
 chown vcap:vcap $certs_path/*
@@ -16,6 +14,4 @@ export COCKROACH_HOST=<%= link("conn").instances.first.address %>
 export COCKROACH_PORT=<%= link("conn").p("port") %>
 
 /var/vcap/packages/cockroachdb/cockroach \
-  user rm --user root --certs-dir $certs_path <%= p("user") %>
-
-echo ""
+  sql --user root --certs-dir $certs_path -e "DROP DATABASE IF EXISTS <%= p("name") %> <%= p("restrict") ? "RESTRICT" : "" %>;"

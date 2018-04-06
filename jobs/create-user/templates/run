@@ -2,11 +2,11 @@
 
 set -e
 
-certs_path=/var/vcap/data/create-service-binding/certs
+certs_path=/var/vcap/data/create-user/certs
 rm -rf $certs_path
 mkdir -p $certs_path
 
-cp /var/vcap/jobs/create-service-binding/config/certs/* $certs_path/
+cp /var/vcap/jobs/create-user/config/certs/* $certs_path/
 mv $certs_path/client.crt $certs_path/client.<%= p("user") %>.crt
 mv $certs_path/client.key $certs_path/client.<%= p("user") %>.key
 
@@ -25,12 +25,13 @@ export COCKROACH_PORT=<%= link("conn").p("port") %>
   -e "GRANT <%= p("privileges").join(",") %> ON DATABASE <%= link("database").p("name") %> TO <%= p("user") %>;"  >/dev/null
 
 echo "{
-  \"credentials\":{
-    \"username\":   \"<%= p("user") %>\",
-    \"database\":   \"<%= link("database").p("name") %>\",
+  \"host\": \"${COCKROACH_HOST}\",
+  \"port\": \"${COCKROACH_PORT}\",
 
-    \"ca.crt\":     \"$(cat /var/vcap/jobs/create-service-binding/config/certs/ca.crt    |perl -p -e 's/\n/\\n/')\",
-    \"client.crt\": \"$(cat /var/vcap/jobs/create-service-binding/config/certs/client.crt|perl -p -e 's/\n/\\n/')\",
-    \"client.key\": \"$(cat /var/vcap/jobs/create-service-binding/config/certs/client.key|perl -p -e 's/\n/\\n/')\"
-  }
+  \"username\": \"<%= p("user") %>\",
+  \"database\": \"<%= link("database").p("name") %>\",
+
+  \"ca.crt\":     \"$(cat /var/vcap/jobs/create-user/config/certs/ca.crt    |perl -p -e 's/\n/\\n/')\",
+  \"client.crt\": \"$(cat /var/vcap/jobs/create-user/config/certs/client.crt|perl -p -e 's/\n/\\n/')\",
+  \"client.key\": \"$(cat /var/vcap/jobs/create-user/config/certs/client.key|perl -p -e 's/\n/\\n/')\"
 }"

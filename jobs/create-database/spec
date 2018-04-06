@@ -1,12 +1,11 @@
 ---
-name: cockroachdb-database
+name: create-database
 
 templates:
   root_cert_ca: config/certs/ca.crt
   root_cert: config/certs/client.root.crt
   root_cert_private_key: config/certs/client.root.key
-  # todo bin/run ideally
-  post-start: bin/post-start
+  run: bin/run
 
 consumes:
 - name: conn

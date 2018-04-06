@@ -1,0 +1,24 @@
+---
+name: delete-database
+
+templates:
+  root_cert_ca: config/certs/ca.crt
+  root_cert: config/certs/client.root.crt
+  root_cert_private_key: config/certs/client.root.key
+  run: bin/run
+
+consumes:
+- name: conn
+  type: cockroachdb_conn
+- name: root_user
+  type: cockroachdb_root_user
+
+packages:
+- cockroachdb
+
+properties:
+  name:
+    description: "Name of the database to delete"
+  restrict:
+    description: "Do not drop the database if it contains any tables or views. (https://www.cockroachlabs.com/docs/stable/drop-database.html#parameters)"
+    default: false
